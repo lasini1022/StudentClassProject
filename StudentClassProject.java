@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,7 +13,6 @@ public class StudentClassProject {
     static ArrayList<String> courses = null;
 
     public static void main(String[] args) {
-        System.out.println('1'==1);
         try {
             FileWriter names_file = new FileWriter(filename); // Specify the filename
             Scanner myReader = new Scanner((Readable) names_file);
@@ -54,12 +52,14 @@ public class StudentClassProject {
 
 
 
-    private static String getUserInput() {
+    private static ArrayList<String> getUserInput() throws IOException {
         System.out.println("Type student name and press enter");
         //String input = in.next() + "|";
         Student s;
-        System.out.println("Type student number and press enter");
+        //System.out.println("Type student number and press enter");
         String name = in.next();
+        System.out.println("Type how may courses does a student have and press enter: ");
+        int n = in.nextInt();
         int year;
         do {
             System.out.println("Type year of birth");
@@ -76,10 +76,10 @@ public class StudentClassProject {
         do {
             System.out.println("Type day of birth");
             day = in.nextInt();
-        }while(true);
-        for (int i = 0; i < 5; i++) { //ask for 4 courses
-            System.out.println("Type in course code, or type done if finished");
-            String course = in.next();
+        }while(local(year,month,day));
+        System.out.println("Type in course code, or type done if finished");
+        for (int i = 0; i < n; i++) { //ask for 4 courses
+            String course = in.nextLine();
             if (course.equals("done")) break;
             courses.add(i,course);
             //input += course + ",";
@@ -88,13 +88,26 @@ public class StudentClassProject {
 
         return "l";
     }
+
+    /**
+     * Checks if the year, month, and day entered is valid.
+     * @param year year user enters for DOB
+     * @param month month user enters for DOB
+     * @param day day user enters for DOB
+     * @return false if the three variables were able to make a
+     * @throws IOException if date is not valid
+     */
+    private static boolean local (int year, int month, int day) throws IOException {
+        LocalDate date = LocalDate.of(year,month,day);
+        return false;
+    }
     private static void writeFile() {
 
         try {
             FileWriter myWriter = new FileWriter(filename);
 
-            for (int i = 0; i < students.length; i++) {
-                myWriter.write(students[i] + "\r\n");
+            for (String student : students) {
+                myWriter.write(student + "\r\n");
             }
             myWriter.close();
         }
@@ -106,4 +119,3 @@ public class StudentClassProject {
     }
 
 }
-
