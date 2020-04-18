@@ -3,7 +3,6 @@ import java.io.FileNotFoundException;
 import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,7 +15,7 @@ public class Student {
     final private LocalDate DOB;
     private ArrayList<String> courses = new ArrayList<>(MAX_COURSES); /* should be a list of course objects*/
     private int numCoursesEnrolled = 0;
-    private static final String filename = "C:\\users\\Owner\\Desktop\\ClassList.txt";
+    private static final String filename = "src/CourseList";
 
     public Student (String name, LocalDate DOB, ArrayList<String> courses){
         this.name = name;
@@ -65,13 +64,35 @@ public class Student {
             for (int i = 0; i < numCoursesEnrolled; i++) { // check if course is already there
                 if (courses.get(i).equals(course)) return false;
             }
-            while () {
+           //// while () {
                 courses.add(numCoursesEnrolled, course); //add the course to the list
                 numCoursesEnrolled++; //update course counter
                 return true;
-            }
+           // }
         }
         return false;
+    }
+
+    public String progress(){
+        LocalDate today = LocalDate.now();
+        int month = today.getMonthValue();
+        int day = today.getDayOfMonth();
+        if(month>8 && month<2){
+            if(month==9){//if current day is in september and is before or after day 3 of the month
+                if(day>2){
+                    return "present";
+                }
+                else if(day<3){ return "past"}
+            }
+            if(month==1){
+                if(day==30){return "";}
+                else if(day==31){}
+            }
+        }
+        else if(){}
+        else if(){}
+        else if(){}
+        return "none";
     }
 
     /*uses a file xyz.txt with list of all course*/
@@ -81,7 +102,7 @@ public class Student {
             if ((course.charAt(0)>64 && course.charAt(0)<91)) {
                 if ((course.charAt(1)>64 && course.charAt(1)<91)) {
                     if ((course.charAt(2)>64 && course.charAt(2)<91)) {
-                        if ((course.charAt(3) >0 && course.charAt(3)<5) || (course.charAt(3)>64 && course.charAt(3)<69)) {
+                        if (course.charAt(3) == 4){
                             if (n==8 || (n>66 && n<70) || (n>75 && n<81) || (n==85)) {
                                 return true;
                             }
@@ -96,7 +117,7 @@ public class Student {
     public void courseList(){
         String data;
         try {
-            File myObj = new File("filename.txt");
+            File myObj = new File(filename);
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
                 data = myReader.nextLine();
