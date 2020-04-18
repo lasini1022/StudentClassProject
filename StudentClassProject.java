@@ -1,5 +1,3 @@
-// hello world!
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -20,7 +18,7 @@ public class StudentClassProject {
         try {
             FileWriter names_file = new FileWriter(filename); // Specify the filename
             Scanner myReader = new Scanner((Readable) names_file);
-       
+
             int line_num = 1;
             //read the file
             while (myReader.hasNextLine()) {
@@ -86,10 +84,9 @@ public class StudentClassProject {
             courses.add(i,course);
             //input += course + ",";
         }
-        LocalDate DOB = new LocalDate(year, month, day);
-        s = new Student (name, DOB,courses);
+        s = new Student (name, LocalDate.of(year,month,day),courses);
 
-        return DOB;
+        return "l";
     }
     private static void writeFile() {
 
