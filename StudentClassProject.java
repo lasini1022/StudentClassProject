@@ -1,3 +1,4 @@
+java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,9 +15,9 @@ public class StudentClassProject {
 
     public static void main(String[] args) {
         try {
-            FileWriter names_file = new FileWriter(filename); // Specify the filename
-            Scanner myReader = new Scanner((Readable) names_file);
-
+            File names_file = new File(filename); // Specify the filename
+            Scanner myReader = new Scanner(names_file);
+            
             int line_num = 1;
             //read the file
             while (myReader.hasNextLine()) {
@@ -55,7 +56,7 @@ public class StudentClassProject {
     private static ArrayList<String> getUserInput() throws IOException {
         System.out.println("Type student name and press enter");
         //String input = in.next() + "|";
-        Student s;
+        Student s = null;
         //System.out.println("Type student number and press enter");
         String name = in.next();
         System.out.println("Type how may courses does a student have and press enter: ");
@@ -77,6 +78,8 @@ public class StudentClassProject {
             System.out.println("Type day of birth");
             day = in.nextInt();
         }while(local(year,month,day));
+        assert s != null;
+        s.courseList();
         System.out.println("Type in course code, or type done if finished");
         for (int i = 0; i < n; i++) { //ask for 4 courses
             String course = in.nextLine();
