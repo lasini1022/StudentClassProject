@@ -1,26 +1,21 @@
-// hello world!
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-public class StudentClassProject {
-    private static final String filename = "C:\\users\\Owner\\Desktop\\StudentNames.txt";
-    static String [] students; //hold the list of students
-    private static Scanner in = new Scanner(System.in);
-    static ArrayList<String> courses = null;
 
-    public static void main(String[] args) {
-        System.out.println('1'==1);
+public class VarshiniTestStudentClassProject {
+    private static final String filename = "names.txt";
+    private static Student[] students; //hold the list of students
+    private static Scanner in = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+
         try {
-            FileWriter names_file = new FileWriter(filename); // Specify the filename
-            Scanner myReader = new Scanner((Readable) names_file);
-       
+            File names_file = new File(filename); // Specify the filename
+            Scanner myReader = new Scanner(names_file);
+
             int line_num = 1;
             //read the file
             while (myReader.hasNextLine()) {
@@ -41,14 +36,13 @@ public class StudentClassProject {
 
             System.out.println("How many students?");
             int num_names = in.nextInt();
-            students = new String[num_names];
+            students = new Student[num_names];
+
             for (int i = 0; i < num_names; i++) { //go through all students
-                students = getUserInput();
+                students[i] = getUserInput();
             }
             writeFile();
 
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
     }
@@ -56,12 +50,16 @@ public class StudentClassProject {
 
 
 
-    private static String getUserInput() {
+    private static Student getUserInput() throws IOException {
         System.out.println("Type student name and press enter");
-        //String input = in.next() + "|";
+       // String input = in.next() + "|";
         Student s;
-        System.out.println("Type student number and press enter");
+        //System.out.println("Type student number and press enter");
         String name = in.next();
+
+        System.out.println("Type how many courses does a student have and press enter");
+        int courses = in.nextInt();
+
         int year;
         do {
             System.out.println("Type year of birth");
@@ -73,26 +71,25 @@ public class StudentClassProject {
             System.out.println("Type month of birth");
             month = in.nextInt();
         }while (month < 1 || month > 12);
-
+        
         int day;
         do {
-            System.out.println("Type day of birth");
+            System.out.println("Type the date of birth");
             day = in.nextInt();
-        }while(true);
-        for (int i = 0; i < 5; i++) { //ask for 4 courses
-            System.out.println("Type in course code, or type done if finished");
+        } while (local(year,month,day));
+
+        System.out.println("Type in course code, or type done if finished");
+        for (int i = 0; i < 4; i++) { //ask for 4 courses
+
             String course = in.next();
             if (course.equals("done")) break;
-            courses.add(i,course);
             //input += course + ",";
         }
-        LocalDate DOB = new LocalDate(year, month, day);
-        s = new Student (name, DOB,courses);
-
-        return DOB;
+        s = new Student (name, LocalDate.of(year,month,day), courses);
+        return s;
     }
-    private static void writeFile() {
 
+    private static void writeFile() {
         try {
             FileWriter myWriter = new FileWriter(filename);
 
@@ -105,8 +102,11 @@ public class StudentClassProject {
             System.out.println("error occurred creating a file");
         }
 
-
     }
 
+    private static boolean local (int year, int month, int day) throws IOException {
+        LocalDate date = LocalDate.of(year, month, day);
+        return false;
+    }
 }
 
