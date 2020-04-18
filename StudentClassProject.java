@@ -43,7 +43,32 @@ public class StudentClassProject {
         line_num++;
         }
         myReader.close();
+        //asking for deleting and adding new students
+        System.out.println("Would you want to add or delete student, if not press done? \n Note:Type in only lowercase");
+        System.out.print("type add/delete/done: ");
+        String extra = in.nextLine();
 
+        label:
+        do {
+            switch (extra) {
+                case "add":
+
+                    getUserInput();
+
+                    break;
+                case "delete":
+                    System.out.println("Please type in the name of the student that you will like to delete? ");
+                    
+                    break;
+                case "done":
+                    break label;
+                default:
+                    System.out.println("Sorry, you have not typed ");
+                    break;
+            }
+        }
+
+        while (extra.equals("add") || extra.equals("delete"));
 
     }
 
@@ -127,3 +152,4 @@ public class StudentClassProject {
     }
 
 }
+
