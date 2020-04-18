@@ -1,3 +1,5 @@
+// hello world!
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -18,7 +20,7 @@ public class StudentClassProject {
         try {
             FileWriter names_file = new FileWriter(filename); // Specify the filename
             Scanner myReader = new Scanner((Readable) names_file);
-
+       
             int line_num = 1;
             //read the file
             while (myReader.hasNextLine()) {
