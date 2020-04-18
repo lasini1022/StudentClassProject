@@ -58,7 +58,7 @@ public class StudentClassProject {
                     break;
                 case "delete":
                     System.out.println("Please type in the name of the student that you will like to delete? ");
-                    
+
                     break;
                 case "done":
                     break label;
@@ -108,9 +108,9 @@ public class StudentClassProject {
             }
             //input += course + ",";
         }
-        LocalDate DOB = LocalDate.of(year,month,day);
-        Student a = new Student (name, DOB);
+        Student a = new Student (name, LocalDate.of(year,month,day));
         String nom = a.getName();
+        LocalDate DOB = a.getDOB();
         int id = a.getID();
         StringBuilder co= null;
         for (String cours : courses) {
@@ -152,4 +152,3 @@ public class StudentClassProject {
     }
 
 }
-
