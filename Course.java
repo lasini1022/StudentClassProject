@@ -1,11 +1,12 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Course {
     private int n;
-    //private int MAX_COURSES=n;
+    private int MAX_COURSES=n;
     //private String course;
     private int numCoursesEnrolled = 0;
     private ArrayList<String> courses = new ArrayList<>(n);
@@ -23,6 +24,7 @@ public class Course {
      * Proper formats can be found on Ministry of education publication
      * @return true if the course was successfully added, and false otherwise (if course is already on the list, or max number of courses is reached
      * //@throws java.security.InvalidParameterException if course code is not properly formatted
+     * @param course course that user enters
      */
    // public String addCourse1 (){
         //if (!check_course_format()) {
@@ -41,24 +43,19 @@ public class Course {
         //return false;
     //}
 
-    public ArrayList<String> addCourses(int MAX_COURSES){
-        String course;
-        for(int i=0; i<courses.size(); i++){
-            for(int j=0; j<MAX_COURSES; j++) {
-                do {
-                    course = in.nextLine();
-                } while (!(check_course_format(course) && courseList(course)));
-                if (numCoursesEnrolled < MAX_COURSES) {
-                    courses.add(numCoursesEnrolled, course);
-                    numCoursesEnrolled++;
-                }
+    public String addCourses(String course){
+        for(int j=0; j<MAX_COURSES; j++) {
+            if (numCoursesEnrolled < MAX_COURSES) {
+                //courses.add(numCoursesEnrolled, course);
+                numCoursesEnrolled++;
+                return course;
             }
         }
-        return getCourses();
+        return null;
     }
 
     /*uses a file xyz.txt with list of all course*/
-    private boolean check_course_format(String course) {
+    public boolean check_course_format(String course) {
         char one = course.charAt(0);
         char two = course.charAt(1);
         char three = course.charAt(2);
@@ -107,9 +104,10 @@ public class Course {
         int m = in.nextInt();
         System.out.print("Enter today's day: ");
         int d = in.nextInt();
-        //LocalDate today = LocalDate.of(y,m,d);
-        //int month = today.getMonthValue();
-        //int day = today.getDayOfMonth();
+        LocalDate today = LocalDate.of(y,m,d);
+        int year = today.getYear();
+        int month = today.getMonthValue();
+        int day = today.getDayOfMonth();
         if(m>8 && m<2){
             if(m==9){//if current day is in september and is before or after day 3 of the month
                 if(d>2){
