@@ -35,16 +35,27 @@ public class Student {
                 if(day>2){
                     return "present";
                 }
-                else if(day<3){ return "past";}
             }
             if(month==1){
-                if(day==30){return "";}
-                else if(day==31){}
+                if(day==30){return "present";}
+                else if(day==31){return "future";}
+                else if(day<30){return "present";}
+            }
+            return "present";
+        }
+        else if(month>1 && month<7){
+            if(month==6){
+                if(day>24 && day<30){
+                    return "past";
+                }
+                else if(day<25){
+                    return "present";
+                }
             }
         }
-        else if(){}
-        else if(){}
-        else if(){}
+        else if(month>5 && month<9){
+            return "past";
+        }
         return "none";
     }
 }
