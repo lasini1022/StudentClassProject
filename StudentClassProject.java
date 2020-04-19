@@ -1,9 +1,9 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -12,15 +12,15 @@ import java.util.StringTokenizer;
  * @since 4/18/2020
  */
 public class StudentClassProject {
-    private static final String filename = "C:\\users\\Owner\\Desktop\\StudentNames.txt";
+    static final String filename = "C:\\users\\Owner\\Desktop\\StudentNames.txt";
     static ArrayList<String> students; //hold the list of students
-    private static Scanner in = new Scanner(System.in);
-    private static ArrayList<String> courses = new ArrayList<>();
-    static final String file = "src/CourseList";
+    static Scanner in = new Scanner(System.in);
+    static final String teacher = "src/TeacherList";
+    static ArrayList<String> educators = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         System.out.println("How many students?");
-        int num_students = in.nextInt();
+        int num_students = in.nextInt()+1;
         //students = new String[num_names];//doesn't need since it is a array list
         for (int i = 0; i < num_students; i++) { //go through all students
             students.add(getUserInput());
@@ -32,15 +32,15 @@ public class StudentClassProject {
         int line_num = 1;
         //read the file
         while (myReader.hasNextLine()) {
-        String data = myReader.nextLine(); //read in one line from a while
-        System.out.print (line_num);
-        //tokenize the line
-        StringTokenizer st = new StringTokenizer(data, "|");
-        System.out.println (" Name: " + st.nextToken());
-        System.out.println ("Student #: " + st.nextToken());
-        System.out.println ("DOB: " + st.nextToken());
-        System.out.println ("Courses: " + st.nextToken());
-        line_num++;
+            String data = myReader.nextLine(); //read in one line from a while
+            System.out.print(line_num);
+            //tokenize the line
+            StringTokenizer st = new StringTokenizer(data, "|");
+            System.out.println(" Name: " + st.nextToken());
+            System.out.println("Student #: " + st.nextToken());
+            System.out.println("DOB: " + st.nextToken());
+            System.out.println("Courses: " + st.nextToken());
+            line_num++;
         }
         //myReader.close();
         //asking for deleting and adding new students
@@ -65,7 +65,56 @@ public class StudentClassProject {
                     break;
             }
         } while (extra.equals("add") || extra.equals("delete"));
+
+        System.out.println("Would would you want to add or delete a teacher, if not type delete");
+        System.out.println("delete/add/done");
+        String user = in.nextLine();
+
+        switch (user) {
+            case "done":
+                break;
+
+            case "delete":
+                System.out.println("Please type in the teacher would you like to delete ");
+                teacherInput();
+
+                break;
+            case "add":
+                getteacheradd();
+                break;
+        }
     }
+
+    /**
+     * @return the list of teachers after deleting it
+     * */
+    private static String teacherInput() {
+        System.out.println("Type teacher name and press enter");
+        String teach = in.nextLine();
+
+        System.out.println("Type in the course: ");
+        String course = in.nextLine();
+
+        if(teach.equals(teacher)){
+            educators.remove(teach);
+        }
+        return teacher;
+    }
+
+    private static String getteacheradd(){
+        System.out.println("Type teacher name and press enter");
+        String teach = in.nextLine();
+
+        System.out.println("Type in the course: ");
+        String course = in.nextLine();
+
+        if(teach.equals(teacher)){
+            educators.add(teach);
+        }
+        return teacher;
+    }
+
+
 
     private static String getUserInput() {
         System.out.println("Type student name and press enter");
@@ -86,38 +135,39 @@ public class StudentClassProject {
         System.out.println("Type day of birth");
         day = in.nextInt();
         System.out.println("Type how many courses does the student have then press enter: ");
-        int count_stop = in.nextInt();
-        System.out.println("These are the courses you can pick from:");
-        courseList_Print();
-        System.out.println("Type in course code and type done when finished: ");
-        String course;
-       // int counter =0;
+        int count_stop = in.nextInt()+1;
         Course c = new Course (count_stop);
-        for(int h=0; h<count_stop; h++) {
+        String [] courses = new String[count_stop];
+        System.out.println("These are the courses you can pick from:");
+        c.courseList_Print();
+        System.out.println("Type in course code or type done when finished: ");
+        String course;
+        // int counter =0;
+        for(int h=0; h<courses.length;h++) {
             course = in.nextLine();
-            if(course.equals("done")){break;}
-            else if (c.courseList(course) && c.check_course_format(course)) {
-                if (c.addCourses(course).equals(course)) {
-                    courses.add(course);
-                    h++;
-                }
-            } else {
-                h--;
-            }
+            //if(course.equals("done")){break;}
+            //else if (c.courseList(course) && c.check_course_format(course)) {
+                //if (c.addCourses(course).equals(course)) {
+            courses[h] = course;
+        //}
+                //}
+            //} //else {
+                //h--;
+           // }
         }
-        System.out.println(c.progress());
-        for(String part: courses){
-            System.out.println(part);
-        }
+        System.out.println("The courses for this student "+c.progress()+" semester.");
+        System.out.println(Arrays.toString(courses));
         Student a = new Student (name, LocalDate.of(year,month,day));
         String nom = a.getName();
         LocalDate DOB = a.getDOB();
         int id = a.getID();
-        String co="";
-        for (int g=0; g<courses.size(); g++) {
-            co+=courses.get(g)+",";
+        StringBuilder co= new StringBuilder();
+        for (String cours : courses) {
+            co.append(cours).append(",");
         }
-        return nom+"|"+id+"|"+DOB+"|"+co;//can later add student and room number
+        String s =nom+"|"+id+"|"+DOB+"|"+co;
+        System.out.println(s);
+        return s;//can later add student and room number
     }
 
     private static void writeFile() {
@@ -130,22 +180,6 @@ public class StudentClassProject {
         }
         catch(IOException error){
             System.out.println("error occurred creating a file");
-        }
-    }
-
-    public static void courseList_Print(){
-        String data;
-        try {
-            File myObj = new File(file);
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                data = myReader.nextLine();
-                System.out.println(data);
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
         }
     }
 }
