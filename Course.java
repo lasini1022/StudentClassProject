@@ -1,7 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Course {
@@ -9,7 +7,6 @@ public class Course {
     private int MAX_COURSES=n;
     //private String course;
     private int numCoursesEnrolled = 0;
-    private ArrayList<String> courses = new ArrayList<>(n);
     static final String file = "src/CourseList";
     static Scanner in = new Scanner(System.in);
 
@@ -19,30 +16,28 @@ public class Course {
         //this.courses = courses;
 
     }
-    /**
-     * Adds the specified course to the list of courses that student is taking
-     * Proper formats can be found on Ministry of education publication
-     * @return true if the course was successfully added, and false otherwise (if course is already on the list, or max number of courses is reached
-     * //@throws java.security.InvalidParameterException if course code is not properly formatted
-     * @param course course that user enters
-     */
-   // public String addCourse1 (){
-        //if (!check_course_format()) {
-          //  throw new InvalidParameterException("Invalid course code " + course); //exceptions are actually objects as well
-        //}
-        //if (numCoursesEnrolled < MAX_COURSES) { //check if  list of courses is not full
-          //  for (int i = 0; i < numCoursesEnrolled; i++) { // check if course is already there
-            //    if (courses.get(i).equals(course)) return ;
-            //}
-            //if (courseList()) {
-            ////courses.add(course); //add the course to the list
-            //numCoursesEnrolled++; //update course counter
-            //return course;
-            //}
-        //}
-        //return false;
+    //
+    // public String addCourse1 (){
+    //if (!check_course_format()) {
+    //  throw new InvalidParameterException("Invalid course code " + course); //exceptions are actually objects as well
+    //}
+    //if (numCoursesEnrolled < MAX_COURSES) { //check if  list of courses is not full
+    //  for (int i = 0; i < numCoursesEnrolled; i++) { // check if course is already there
+    //    if (courses.get(i).equals(course)) return ;
+    //}
+    //if (courseList()) {
+    ////courses.add(course); //add the course to the list
+    //numCoursesEnrolled++; //update course counter
+    //return course;
+    //}
+    //}
+    //return false;
     //}
 
+    /**
+     * checks if there is any space left in the array list anymore for adding courses.
+     * @return true if there is space left and false otherwise
+     */
     public String addCourses(String course){
         for(int j=0; j<MAX_COURSES; j++) {
             if (numCoursesEnrolled < MAX_COURSES) {
@@ -75,12 +70,12 @@ public class Course {
         }
         return false;
     }
-    public ArrayList<String> getCourses (){
+    //public ArrayList<String> getCourses (){
         //return courses; <-does NOT make a copy of array, this gives access to course list
-        return courses ;// comment this out//return a full copy of array of courses
-    }
+      //  return courses ;// comment this out//return a full copy of array of courses
+    //}
 
-     public boolean courseList(String course){
+    public boolean courseList(String course){
         try {
             File myObj = new File(file);
             Scanner myReader = new Scanner(myObj);
@@ -98,43 +93,59 @@ public class Course {
         return false;
     }
     public String progress(){
-        System.out.print("Enter today's year ");
-        int y  = in.nextInt();
+        //System.out.print("Enter today's year ");
+        //int y  = in.nextInt();
         System.out.print("Enter today's month: ");
         int m = in.nextInt();
         System.out.print("Enter today's day: ");
         int d = in.nextInt();
-        LocalDate today = LocalDate.of(y,m,d);
-        int year = today.getYear();
-        int month = today.getMonthValue();
-        int day = today.getDayOfMonth();
+        //LocalDate today = LocalDate.of(y,m,d);
+        //int year = today.getYear();
+        //int month = today.getMonthValue();
+        //int day = today.getDayOfMonth();
         if(m>8 && m<2){
             if(m==9){//if current day is in september and is before or after day 3 of the month
                 if(d>2){
-                    return "present";
+                    return "are in the current";
                 }
             }
             else if(m==1){
-                if(d==30){return "present";}
-                else if(d==31){return "future";}
-                else if(d<30){return "present";}
+                if(d==30){return "are in the current";}
+                else if(d==31){return "are in the upcoming";}
+                else if(d<30){return "are in the current";}
             }
-            return "present";
+            return "are in the current";
         }
         else if(m>1 && m<7){
             if(m==6){
                 if(d>24 && d<30){
-                    return "past";
+                    return "were in the past";
                 }
                 else if(d<25){
-                    return "present";
+                    return "are in the current";
                 }
             }
-            return "present";
+            return "are in the current";
         }
         else if(m>5 && m<9){
-            return "past";
+            return "were in the past";
         }
-        return "none";
+        return "in none of the";
+    }
+
+    public void courseList_Print(){
+        String data;
+        try {
+            File myObj = new File(file);
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                data = myReader.nextLine();
+                System.out.println(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 }
