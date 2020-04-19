@@ -86,24 +86,38 @@ public class StudentClassProject {
         System.out.println("Type day of birth");
         day = in.nextInt();
         System.out.println("Type how many courses does the student have then press enter: ");
-        int n = in.nextInt();
-        courses = new ArrayList<>(n);
+        int count_stop = in.nextInt();
+        courses = new ArrayList<>(count_stop);
         //assert false;
         System.out.println("These are the courses you can pick from:");
         courseList_Print();
         //String course;
-        System.out.println("Type in course code: ");
+        System.out.println("Type in course code and type done when finished: ");
         //for (int i = 0; i < n; i++) { //ask for 4 courses
             //course = in.nextLine();
-        Course c = new Course (n);
+        String course;
+        int counter =0;
+        Course c = new Course (count_stop);
         //for(int h=0; h<n; h++) {
-            courses = c.addCourses(n);
+        //int numEnrolledCourses =0;
+            do {
+                course = in.nextLine();
+                if(course.equals("done")){break;}
+                if (c.courseList(course) && c.check_course_format(course)) {
+                    if (c.addCourses(course).equals(course)) {
+                        courses.add(counter, course);
+                        counter++;
+                    }
+                } else {
+                    counter--;
+                }
+            }while(true);
         //}
         System.out.println(c.progress());
            // if (course.equals("done")) break;
             //if(c.addCourse()) {
                 //courses.add(course);as
-        
+
             //}
             //input += course + ",";
         //}
