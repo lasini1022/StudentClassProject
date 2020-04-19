@@ -103,7 +103,7 @@ public class StudentClassProject {
             do {
                 course = in.nextLine();
                 if(course.equals("done")){break;}
-                if (c.courseList(course) && c.check_course_format(course)) {
+                else if (c.courseList(course) && c.check_course_format(course)) {
                     if (c.addCourses(course).equals(course)) {
                         courses.add(counter, course);
                         counter++;
