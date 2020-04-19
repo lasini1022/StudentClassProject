@@ -15,7 +15,7 @@ public class StudentClassProject {
     private static final String filename = "C:\\users\\Owner\\Desktop\\StudentNames.txt";
     static ArrayList<String> students; //hold the list of students
     private static Scanner in = new Scanner(System.in);
-    static ArrayList<String> courses ;
+    private static ArrayList<String> courses = new ArrayList<>();
     static final String file = "src/CourseList";
 
     public static void main(String[] args) throws IOException {
@@ -87,48 +87,34 @@ public class StudentClassProject {
         day = in.nextInt();
         System.out.println("Type how many courses does the student have then press enter: ");
         int count_stop = in.nextInt();
-        courses = new ArrayList<>(count_stop);
-        //assert false;
         System.out.println("These are the courses you can pick from:");
         courseList_Print();
-        //String course;
         System.out.println("Type in course code and type done when finished: ");
-        //for (int i = 0; i < n; i++) { //ask for 4 courses
-            //course = in.nextLine();
         String course;
-        int counter =0;
+       // int counter =0;
         Course c = new Course (count_stop);
-        //for(int h=0; h<n; h++) {
-        //int numEnrolledCourses =0;
-            do {
-                course = in.nextLine();
-                if(course.equals("done")){break;}
-                else if (c.courseList(course) && c.check_course_format(course)) {
-                    if (c.addCourses(course).equals(course)) {
-                        courses.add(counter, course);
-                        counter++;
-                    }
-                } else {
-                    counter--;
+        for(int h=0; h<count_stop; h++) {
+            course = in.nextLine();
+            if(course.equals("done")){break;}
+            else if (c.courseList(course) && c.check_course_format(course)) {
+                if (c.addCourses(course).equals(course)) {
+                    courses.add(course);
+                    h++;
                 }
-            }while(true);
-        //}
+            } else {
+                h--;
+            }
+        }
         System.out.println(c.progress());
-           // if (course.equals("done")) break;
-            //if(c.addCourse()) {
-                //courses.add(course);as
-
-            //}
-            //input += course + ",";
-        //}
+        for(String part: courses){
+            System.out.println(part);
+        }
         Student a = new Student (name, LocalDate.of(year,month,day));
         String nom = a.getName();
         LocalDate DOB = a.getDOB();
         int id = a.getID();
         String co="";
-        //StringBuilder co = new StringBuilder();
         for (int g=0; g<courses.size(); g++) {
-            //co.append(cours).append(",");
             co+=courses.get(g)+",";
         }
         return nom+"|"+id+"|"+DOB+"|"+co;//can later add student and room number
@@ -156,7 +142,7 @@ public class StudentClassProject {
                 data = myReader.nextLine();
                 System.out.println(data);
             }
-            //myReader.close();
+            myReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
