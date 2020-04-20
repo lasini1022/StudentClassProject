@@ -1,21 +1,22 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Course {
-    private int n;
-    private int MAX_COURSES=n;
     //private String course;
     private int numCoursesEnrolled = 0;
+    private Scanner in = new Scanner(System.in);
+    private final String teacher = "src/TeacherList";
+    private ArrayList<ArrayList<String>> teachers = new ArrayList<>(2);
+    static ArrayList<String> educators = new ArrayList<>();
     static final String file = "src/CourseList";
-    static Scanner in = new Scanner(System.in);
 
-    public Course(int n){
-        this.n = n;
+    ////public Course(int n){
         //this.course = course;
         //this.courses = courses;
 
-    }
+   // }
     //
     // public String addCourse1 (){
     //if (!check_course_format()) {
@@ -38,26 +39,26 @@ public class Course {
      * checks if there is any space left in the array list anymore for adding courses.
      * @return true if there is space left and false otherwise
      */
-    public String addCourses(String course){
-        for(int j=0; j<MAX_COURSES; j++) {
-            if (numCoursesEnrolled < MAX_COURSES) {
-                //courses.add(numCoursesEnrolled, course);
-                numCoursesEnrolled++;
-                return course;
+    public boolean addCourses(String cour){
+        int MAX_COURSES = 4;
+        if (numCoursesEnrolled < MAX_COURSES) {
+                if(courseList(cour) && check_course_format(cour)) {
+                    numCoursesEnrolled++;
+                    return true;
+                }
             }
-        }
-        return null;
+        return false;
     }
 
     /*uses a file xyz.txt with list of all course*/
-    public boolean check_course_format(String course) {
-        char one = course.charAt(0);
-        char two = course.charAt(1);
-        char three = course.charAt(2);
-        char fourth = course.charAt(3);
-        char fifth = course.charAt(4);
+    public boolean check_course_format(String c) {
+        char one = c.charAt(0);
+        char two = c.charAt(1);
+        char three = c.charAt(2);
+        char fourth = c.charAt(3);
+        char fifth = c.charAt(4);
 
-        if(course.length()==5) {
+        if(c.length()==5) {
             if ((one>64 && one<91)) {
                 if ((two>64 && two<91)) {
                     if ((three>64 && three<91)) {
@@ -75,13 +76,13 @@ public class Course {
       //  return courses ;// comment this out//return a full copy of array of courses
     //}
 
-    public boolean courseList(String course){
+    public boolean courseList(String cou){
         try {
             File myObj = new File(file);
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
-                if (data.equals(course)) {
+                if (data.equals(cou)) {
                     return true;
                 }
             }
@@ -103,7 +104,7 @@ public class Course {
         //int year = today.getYear();
         //int month = today.getMonthValue();
         //int day = today.getDayOfMonth();
-        if(m>8 && m<2){
+        if((m>8 && m<12)  || (m<2)){
             if(m==9){//if current day is in september and is before or after day 3 of the month
                 if(d>2){
                     return "are in the current";
@@ -116,7 +117,7 @@ public class Course {
             }
             return "are in the current";
         }
-        else if(m>1 && m<7){
+        else if(m<7){
             if(m==6){
                 if(d>24 && d<30){
                     return "were in the past";
@@ -127,25 +128,25 @@ public class Course {
             }
             return "are in the current";
         }
-        else if(m>5 && m<9){
+        else if(m<9){
             return "were in the past";
         }
         return "in none of the";
     }
 
-    public void courseList_Print(){
-        String data;
-        try {
-            File myObj = new File(file);
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                data = myReader.nextLine();
-                System.out.println(data);
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+    /**
+     * @return the list of teachers after deleting it
+     * */
+    private String teacherInput(String t1, String t2) {
+
+        System.out.println("Please type in the course that you would like to replace"+t1+": ");
+        String course = in.nextLine();
+
+        if(teach.equals(teacher)){
+            educators.remove(teach);
         }
+        return teacher;
     }
 }
+
+//check if arraylist is empty by y=using .empty() method
