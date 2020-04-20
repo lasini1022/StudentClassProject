@@ -44,13 +44,14 @@ public class StudentClassProject {
         }
         //myReader.close();
         //asking for deleting and adding new students
-        System.out.println("Would you want to add or delete student, if not press done? \n Note:Type in only lowercase");
-        System.out.print("type add/delete/done: ");
-        String extra = in.nextLine();
+        System.out.println("IF you would like to do anything with the student list,");
+        //System.out.println("Would you want to add or delete student, if not press done? \n Note:Type in only lowercase");
+        System.out.println("type any of these option: add/delete/done");
+        String extraStudent = in.nextLine();
 
         label:
         do {
-            switch (extra) {
+            switch (extraStudent) {
                 case "add":
                     getUserInput();
                     break;
@@ -64,19 +65,19 @@ public class StudentClassProject {
                     System.out.println("Sorry, you have not typed the proper ");
                     break;
             }
-        } while (extra.equals("add") || extra.equals("delete"));
-
-        System.out.println("Would would you want to add or delete a teacher, if not type delete");
-        //System.out.println("d");
-        String user = in.nextLine();
-        Course d = new Course();
+        } while (extraStudent.equals("add") || extraStudent.equals("delete"));
+        String ans;
         do {
+            System.out.print("Would would you want to change a teacher? \nType yes or no: ");
+            ans = in.nextLine();
+            Course d = new Course();
+
             System.out.println("Please type in the teacher would you like to replace: ");
             String teacher1 = in.nextLine();
             System.out.println("Please enter the name of the teacher that you would like to replace " + teacher1 + " with: ");
             String teacher2 = in.nextLine();
             d.teacherInput(teacher1, teacher2);
-        }while();
+        } while(ans.equals("Y"));
     }
 
     private static String getUserInput() {
@@ -114,13 +115,8 @@ public class StudentClassProject {
             if(c.addCourses(course)) {
                 courses[h] = course;
             }
-        //}
-                //}
-            //} //else {
-                //h--;
-           // }
         }
-        System.out.println("The courses for this student "+c.progress()+" semester.");
+        System.out.println("The courses for this student "+progress()+" semester.");
         System.out.println(Arrays.toString(courses));
         Student a = new Student (name, LocalDate.of(year,month,day));
         String nom = a.getName();
@@ -161,6 +157,47 @@ public class StudentClassProject {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+    }
+
+    public static String progress(){
+        //System.out.print("Enter today's year ");
+        //int y  = in.nextInt();
+        System.out.print("Enter today's month: ");
+        int m = in.nextInt();
+        System.out.print("Enter today's day: ");
+        int d = in.nextInt();
+        //LocalDate today = LocalDate.of(y,m,d);
+        //int year = today.getYear();
+        //int month = today.getMonthValue();
+        //int day = today.getDayOfMonth();
+        if((m>8 && m<12)  || (m<2)){
+            if(m==9){//if current day is in september and is before or after day 3 of the month
+                if(d>2){
+                    return "are in the current";
+                }
+            }
+            else if(m==1){
+                if(d==30){return "are in the current";}
+                else if(d==31){return "are in the upcoming";}
+                else if(d<30){return "are in the current";}
+            }
+            return "are in the current";
+        }
+        else if(m<7){
+            if(m==6){
+                if(d>24 && d<30){
+                    return "were in the past";
+                }
+                else if(d<25){
+                    return "are in the current";
+                }
+            }
+            return "are in the current";
+        }
+        else if(m<9){
+            return "were in the past";
+        }
+        return "in none of the";
     }
 
 }
