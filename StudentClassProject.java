@@ -10,17 +10,18 @@ import java.util.StringTokenizer;
 
 /**
  * @author Lasini Kurukulasooriya and Varshini Ganendran
- * @since 4/18/2020
+ * @since 4/16/2020
  */
 public class StudentClassProject {
-    static final String filename = "C:\\users\\Owner\\Desktop\\StudentNames.txt";
+    static final String filename = "src/StudentNames";
     static ArrayList<String> students; //hold the list of students
     static Scanner in = new Scanner(System.in);
     static final String file = "src/CourseList";
 
     public static void main(String[] args) throws IOException {
         System.out.println("How many students?");
-        int num_students = in.nextInt()+1;
+        int num_students = in.nextInt();
+        students= new ArrayList<>(num_students);
         //students = new String[num_names];//doesn't need since it is a array list
         for (int i = 0; i < num_students; i++) { //go through all students
             students.add(getUserInput());
@@ -67,17 +68,22 @@ public class StudentClassProject {
             }
         } while (extraStudent.equals("add") || extraStudent.equals("delete"));
         String ans;
+        Course d = new Course();
         do {
             System.out.print("Would would you want to change a teacher? \nType yes or no: ");
             ans = in.nextLine();
-            Course d = new Course();
-
-            System.out.println("Please type in the teacher would you like to replace: ");
-            String teacher1 = in.nextLine();
-            System.out.println("Please enter the name of the teacher that you would like to replace " + teacher1 + " with: ");
-            String teacher2 = in.nextLine();
-            d.teacherInput(teacher1, teacher2);
-        } while(ans.equals("Y"));
+            if(ans.equals("yes")) {
+                d.teacherFileRead();
+                System.out.println("For what course would you to change the teacher of?");
+                String changeCT = in.nextLine();//CT=CourseTeacher
+                System.out.println("Please type in the teacher would you like to replace: ");
+                String teacher1 = in.nextLine();
+                System.out.println("Please enter the name of the teacher that you would like to replace " + teacher1 + " with: ");
+                String teacher2 = in.nextLine();
+                d.teacherChanger(teacher1, teacher2, changeCT);
+            }
+            else if(ans.equals("no")){break;}
+        } while(ans.equals("yes"));
     }
 
     private static String getUserInput() {
@@ -128,6 +134,7 @@ public class StudentClassProject {
         }
         String s =nom+"|"+id+"|"+DOB+"|"+co;
         System.out.println(s);
+        System.out.print("\n");
         return s;//can later add student and room number
     }
 
@@ -158,6 +165,7 @@ public class StudentClassProject {
             e.printStackTrace();
         }
     }
+
 
     public static String progress(){
         //System.out.print("Enter today's year ");
