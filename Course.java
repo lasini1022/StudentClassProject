@@ -76,7 +76,7 @@ public class Course {
       //  return courses ;// comment this out//return a full copy of array of courses
     //}
 
-    public boolean courseList(String cou){
+    private boolean courseList(String cou){
         try {
             File myObj = new File(file);
             Scanner myReader = new Scanner(myObj);
@@ -93,59 +93,14 @@ public class Course {
         }
         return false;
     }
-    public String progress(){
-        //System.out.print("Enter today's year ");
-        //int y  = in.nextInt();
-        System.out.print("Enter today's month: ");
-        int m = in.nextInt();
-        System.out.print("Enter today's day: ");
-        int d = in.nextInt();
-        //LocalDate today = LocalDate.of(y,m,d);
-        //int year = today.getYear();
-        //int month = today.getMonthValue();
-        //int day = today.getDayOfMonth();
-        if((m>8 && m<12)  || (m<2)){
-            if(m==9){//if current day is in september and is before or after day 3 of the month
-                if(d>2){
-                    return "are in the current";
-                }
-            }
-            else if(m==1){
-                if(d==30){return "are in the current";}
-                else if(d==31){return "are in the upcoming";}
-                else if(d<30){return "are in the current";}
-            }
-            return "are in the current";
-        }
-        else if(m<7){
-            if(m==6){
-                if(d>24 && d<30){
-                    return "were in the past";
-                }
-                else if(d<25){
-                    return "are in the current";
-                }
-            }
-            return "are in the current";
-        }
-        else if(m<9){
-            return "were in the past";
-        }
-        return "in none of the";
-    }
 
     /**
      * @return the list of teachers after deleting it
      * */
-    private String teacherInput(String t1, String t2) {
+    public String teacherInput(String t1, String t2) {
 
-        System.out.println("Please type in the course that you would like to replace"+t1+": ");
-        String course = in.nextLine();
+        ArrayList<String> teacher_list = new
 
-        if(teach.equals(teacher)){
-            educators.remove(teach);
-        }
-        return teacher;
     }
 }
 
