@@ -1,5 +1,4 @@
 import java.time.LocalDate;
-import java.util.Scanner;
 
 public class Student {
     static private int last_id=1; /*keep track of last id assigned. It's SHARED by all instances of Student class*/
@@ -7,7 +6,7 @@ public class Student {
     /*the main purpose of ID is to tell one object from another from user perspective*/
     final private String name;
     final private LocalDate DOB;
-    static Scanner in = new Scanner(System.in);
+    //static Scanner in = new Scanner(System.in);
 
     public Student (String name, LocalDate DOB){
         this.name = name;
