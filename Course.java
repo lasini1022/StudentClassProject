@@ -1,23 +1,18 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Course {
-    //private String course;
     private int numCoursesEnrolled = 0;
-    private Scanner in = new Scanner(System.in);
-    private final String teacher = "src/TeacherList";
-    private ArrayList<ArrayList<String>> teachers = new ArrayList<>(2);
-    static ArrayList<String> educators = new ArrayList<>();
-    static final String file = "src/CourseList";
+    private ArrayList<ArrayList<String>> teacher_list = new ArrayList<>();
+    private int row=13;
+    private static String educators = "src/TeacherList";
 
-    ////public Course(int n){
-        //this.course = course;
-        //this.courses = courses;
+    //public Course(){
+      //  this.row=countLines();
+   //}
 
-   // }
-    //
     // public String addCourse1 (){
     //if (!check_course_format()) {
     //  throw new InvalidParameterException("Invalid course code " + course); //exceptions are actually objects as well
@@ -35,10 +30,6 @@ public class Course {
     //return false;
     //}
 
-    /**
-     * checks if there is any space left in the array list anymore for adding courses.
-     * @return true if there is space left and false otherwise
-     */
     public boolean addCourses(String cour){
         int MAX_COURSES = 4;
         if (numCoursesEnrolled < MAX_COURSES) {
@@ -50,7 +41,6 @@ public class Course {
         return false;
     }
 
-    /*uses a file xyz.txt with list of all course*/
     public boolean check_course_format(String c) {
         char one = c.charAt(0);
         char two = c.charAt(1);
@@ -71,13 +61,10 @@ public class Course {
         }
         return false;
     }
-    //public ArrayList<String> getCourses (){
-        //return courses; <-does NOT make a copy of array, this gives access to course list
-      //  return courses ;// comment this out//return a full copy of array of courses
-    //}
 
     private boolean courseList(String cou){
         try {
+            String file = "src/CourseList";
             File myObj = new File(file);
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
@@ -86,7 +73,7 @@ public class Course {
                     return true;
                 }
             }
-            //myReader.close();
+            myReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -95,12 +82,109 @@ public class Course {
     }
 
     /**
-     * @return the list of teachers after deleting it
-     * */
-    public String teacherInput(String t1, String t2) {
+     *
+     */
+    public void teacherFileRead() {
+        int row= 0;//countLines();
+        try{
+            File teacherFile = new File(educators);
+            Scanner myReader = new Scanner(teacherFile);
+            while(row<13) {
+                while (myReader.hasNextLine()) {
+                    String data = myReader.nextLine();
+                    StringTokenizer tokenizer = new StringTokenizer(data, "|");
+                    while (tokenizer.hasMoreTokens()) {
+                        String token = tokenizer.nextToken();
+                        teacher_list.get(row).add(token);
+                    }
+                    row++;
+                }
+            }
+        }catch(FileNotFoundException e){
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        int col;
+        for(int i=0; i<row; i++){
+            int j=0;
+            col=teacher_list.get(i).size();
+            while(j<col){
+                System.out.print(teacher_list.get(row).get(col)+",");
+                col++;
+            }
+            System.out.print("\n");
+        }
+        teacherFilePrint();
+    }
 
-        ArrayList<String> teacher_list = new
+    public void teacherChanger(String t1, String t2, String cCT) {//cCT means changeCourseTeacher
+        String stRemoved = null;
+        teacherFileRead();
+        int len=13;//countLines();
+        teacherFilePrint();
+        int col;
+        for (int i = 0; i < len; i++) {
+            int j = 0;
+            col = teacher_list.get(i).size();
+            while (j < col) {
+                String st = teacher_list.get(i).get(j);
+                if (st.equals(t1)) {
+                    for (int h = 1; h < col; h++) {
+                        String st1 = teacher_list.get(i).get(h);
+                        if (st1.equals(cCT)) {
+                            String st2 = teacher_list.get(i).get(h + 1);
+                            if (st2.equals("Active")) {
+                                stRemoved = teacher_list.get(i).get(h);
+                                teacher_list.remove(st1);
+                                teacher_list.remove(st2);
+                            }
+                        }
+                    }
+                }
+                col++;
+            }
+        }
+        for(int i=0; i<len; i++){
+            int j=0;
+            col=teacher_list.get(i).size();
+            while(j<col){
+                String st = teacher_list.get(i).get(j);
+                if (st.equals(t2)) {
+                    teacher_list.get(i).add(stRemoved);
+                    teacher_list.get(i).add("Active");
+                }
+                col++;
+            }
+        }
+    }
 
+    public void teacherFilePrint (){
+        int row=13;//countLines();
+        int col;
+        for(int i=0; i<row; i++){
+            int j=0;
+            col=teacher_list.get(i).size();
+            while(j<col){
+                System.out.print(teacher_list.get(row).get(col)+",");
+                col++;
+            }
+            System.out.print("\n");
+        }
+    }
+
+    public static int countLines() {
+        int row=0;
+        try {
+            File myObj = new File(educators);
+            Scanner reader = new Scanner(myObj);
+            while (reader.hasNextLine()) {
+                row++;
+            }
+            reader.close();
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+        return 16;
     }
 }
 
