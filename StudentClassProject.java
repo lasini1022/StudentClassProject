@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -15,8 +16,7 @@ public class StudentClassProject {
     static final String filename = "C:\\users\\Owner\\Desktop\\StudentNames.txt";
     static ArrayList<String> students; //hold the list of students
     static Scanner in = new Scanner(System.in);
-    static final String teacher = "src/TeacherList";
-    static ArrayList<String> educators = new ArrayList<>();
+    static final String file = "src/CourseList";
 
     public static void main(String[] args) throws IOException {
         System.out.println("How many students?");
@@ -67,54 +67,17 @@ public class StudentClassProject {
         } while (extra.equals("add") || extra.equals("delete"));
 
         System.out.println("Would would you want to add or delete a teacher, if not type delete");
-        System.out.println("delete/add/done");
+        //System.out.println("d");
         String user = in.nextLine();
-
-        switch (user) {
-            case "done":
-                break;
-
-            case "delete":
-                System.out.println("Please type in the teacher would you like to delete ");
-                teacherInput();
-
-                break;
-            case "add":
-                getteacheradd();
-                break;
-        }
+        Course d = new Course();
+        do {
+            System.out.println("Please type in the teacher would you like to replace: ");
+            String teacher1 = in.nextLine();
+            System.out.println("Please enter the name of the teacher that you would like to replace " + teacher1 + " with: ");
+            String teacher2 = in.nextLine();
+            d.teacherInput(teacher1, teacher2);
+        }while();
     }
-
-    /**
-     * @return the list of teachers after deleting it
-     * */
-    private static String teacherInput() {
-        System.out.println("Type teacher name and press enter");
-        String teach = in.nextLine();
-
-        System.out.println("Type in the course: ");
-        String course = in.nextLine();
-
-        if(teach.equals(teacher)){
-            educators.remove(teach);
-        }
-        return teacher;
-    }
-
-    private static String getteacheradd(){
-        System.out.println("Type teacher name and press enter");
-        String teach = in.nextLine();
-
-        System.out.println("Type in the course: ");
-        String course = in.nextLine();
-
-        if(teach.equals(teacher)){
-            educators.add(teach);
-        }
-        return teacher;
-    }
-
-
 
     private static String getUserInput() {
         System.out.println("Type student name and press enter");
@@ -136,10 +99,10 @@ public class StudentClassProject {
         day = in.nextInt();
         System.out.println("Type how many courses does the student have then press enter: ");
         int count_stop = in.nextInt()+1;
-        Course c = new Course (count_stop);
+        Course c = new Course ();
         String [] courses = new String[count_stop];
         System.out.println("These are the courses you can pick from:");
-        c.courseList_Print();
+        courseList_Print();
         System.out.println("Type in course code or type done when finished: ");
         String course;
         // int counter =0;
@@ -148,7 +111,9 @@ public class StudentClassProject {
             //if(course.equals("done")){break;}
             //else if (c.courseList(course) && c.check_course_format(course)) {
                 //if (c.addCourses(course).equals(course)) {
-            courses[h] = course;
+            if(c.addCourses(course)) {
+                courses[h] = course;
+            }
         //}
                 //}
             //} //else {
@@ -182,4 +147,20 @@ public class StudentClassProject {
             System.out.println("error occurred creating a file");
         }
     }
+    public static void courseList_Print(){
+        String data;
+        try {
+            File myObj = new File(file);
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                data = myReader.nextLine();
+                System.out.println(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
 }
