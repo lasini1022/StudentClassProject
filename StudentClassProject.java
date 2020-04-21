@@ -4,7 +4,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -17,6 +16,8 @@ public class StudentClassProject {
     static ArrayList<String> students; //hold the list of students
     static Scanner in = new Scanner(System.in);
     static final String file = "src/CourseList";
+    static String FILE = "src/TeacherList";
+    static ArrayList<String> courses;
 
     public static void main(String[] args) throws IOException {
         System.out.println("How many students?");
@@ -37,43 +38,51 @@ public class StudentClassProject {
             System.out.print(line_num);
             //tokenize the line
             StringTokenizer st = new StringTokenizer(data, "|");
-            System.out.println(" Name: " + st.nextToken());
-            System.out.println("Student #: " + st.nextToken());
-            System.out.println("DOB: " + st.nextToken());
-            System.out.println("Courses: " + st.nextToken());
+            int token=1;
+            while(st.hasMoreTokens()) {
+                if(token==1) {
+                    System.out.println(" Name: " + st.nextToken());
+                }
+                else if(token==2) {
+                    System.out.println("Student #: " + st.nextToken());
+                }
+                else if(token==3) {
+                    System.out.println("DOB: " + st.nextToken());
+                }
+                else if(token==4) {
+                    System.out.println("Courses: " + st.nextToken());
+                }
+                token++;
+            }
             line_num++;
         }
-        //myReader.close();
+        myReader.close();
+        System.out.println("\n");
+        Scanner in = new Scanner(System.in);
         //asking for deleting and adding new students
-        System.out.println("IF you would like to do anything with the student list,");
-        //System.out.println("Would you want to add or delete student, if not press done? \n Note:Type in only lowercase");
-        System.out.println("type any of these option: add/delete/done");
-        String extraStudent = in.nextLine();
-
-        label:
+        String extraStudent;
         do {
-            switch (extraStudent) {
-                case "add":
-                    getUserInput();
-                    break;
-                case "delete":
-                    System.out.println("Please type in the name of the student that you will like to delete? ");
-
-                    break;
-                case "done":
-                    break label;
-                default:
-                    System.out.println("Sorry, you have not typed the proper ");
-                    break;
+            System.out.println("IF you would like to do anything with the student list,");
+            //System.out.println("Would you want to add or delete student, if not press done? \n Note:Type in only lowercase");
+            System.out.println("type any of these option: add/delete/done");
+            extraStudent = in.nextLine();
+            if(extraStudent.equals("add")){
+                getUserInput();
             }
-        } while (extraStudent.equals("add") || extraStudent.equals("delete"));
+            else if(extraStudent.equals("delete")){
+                System.out.println("Please enter the student's name that you would like to delete:");
+                String deleteStudent = in.nextLine();
+                deleteStudent(deleteStudent);
+            }
+            else if(extraStudent.equals("done")){break;}
+        } while(extraStudent.equals("add") || extraStudent.equals("delete"));
         String ans;
         Course d = new Course();
         do {
             System.out.print("Would would you want to change a teacher? \nType yes or no: ");
             ans = in.nextLine();
             if(ans.equals("yes")) {
-                d.teacherFileRead();
+                teacherList_Print();
                 System.out.println("For what course would you to change the teacher of?");
                 String changeCT = in.nextLine();//CT=CourseTeacher
                 System.out.println("Please type in the teacher would you like to replace: ");
@@ -87,6 +96,7 @@ public class StudentClassProject {
     }
 
     private static String getUserInput() {
+        Course c =new Course();
         System.out.println("Type student name and press enter");
         String name = in.next();
         int year;
@@ -105,25 +115,29 @@ public class StudentClassProject {
         System.out.println("Type day of birth");
         day = in.nextInt();
         System.out.println("Type how many courses does the student have then press enter: ");
-        int count_stop = in.nextInt()+1;
-        Course c = new Course ();
-        String [] courses = new String[count_stop];
+        int count_stop = in.nextInt();
+        courses = new ArrayList<>();
         System.out.println("These are the courses you can pick from:");
         courseList_Print();
         System.out.println("Type in course code or type done when finished: ");
         String course;
         // int counter =0;
-        for(int h=0; h<courses.length;h++) {
+        System.out.println("The courses arraylist size: "+courses.size());
+        System.out.println("The count_stop is: "+count_stop);
+        for(int h=-1; h<count_stop;h++) {
             course = in.nextLine();
             //if(course.equals("done")){break;}
             //else if (c.courseList(course) && c.check_course_format(course)) {
                 //if (c.addCourses(course).equals(course)) {
             if(c.addCourses(course)) {
-                courses[h] = course;
+                courses.add(h+1, course);
             }
         }
+        System.out.println("The courses arraylist size: "+courses.size());
         System.out.println("The courses for this student "+progress()+" semester.");
-        System.out.println(Arrays.toString(courses));
+        for (String value : courses) {
+            System.out.print(value + ",");
+        }
         Student a = new Student (name, LocalDate.of(year,month,day));
         String nom = a.getName();
         LocalDate DOB = a.getDOB();
@@ -166,18 +180,27 @@ public class StudentClassProject {
         }
     }
 
+    public static void teacherList_Print(){
+        String data;
+        try {
+            File myObj = new File(FILE);
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                data = myReader.nextLine();
+                System.out.println(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
 
     public static String progress(){
-        //System.out.print("Enter today's year ");
-        //int y  = in.nextInt();
         System.out.print("Enter today's month: ");
         int m = in.nextInt();
         System.out.print("Enter today's day: ");
         int d = in.nextInt();
-        //LocalDate today = LocalDate.of(y,m,d);
-        //int year = today.getYear();
-        //int month = today.getMonthValue();
-        //int day = today.getDayOfMonth();
         if((m>8 && m<12)  || (m<2)){
             if(m==9){//if current day is in september and is before or after day 3 of the month
                 if(d>2){
@@ -208,4 +231,20 @@ public class StudentClassProject {
         return "in none of the";
     }
 
+    public static void deleteStudent(String name) throws FileNotFoundException {
+        int length = students.size();
+        for(int g=0; g<length;){
+            File names_file = new File(filename); // Specify the filename
+            Scanner myReader = new Scanner(names_file);
+            while(myReader.hasNextLine()){
+                String data = myReader.nextLine();
+                StringTokenizer tokenizer = new StringTokenizer(data, "|");
+                String st = tokenizer.nextToken();
+                if(st.equals(name)){
+                    students.remove(data);
+                }
+                g++;
+            }
+        }
+    }
 }
