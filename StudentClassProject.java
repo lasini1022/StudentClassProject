@@ -129,7 +129,7 @@ public class StudentClassProject {
             //if(course.equals("done")){break;}
             //else if (c.courseList(course) && c.check_course_format(course)) {
                 //if (c.addCourses(course).equals(course)) {
-            if(c.addCourses(course)) {
+            if(c.addCourses()) {
                 courses.add(h+1, course);
             }
         }
