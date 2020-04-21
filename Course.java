@@ -7,6 +7,11 @@ public class Course {
     private int numCoursesEnrolled = 0;
     private ArrayList<ArrayList<String>> teacher_list = new ArrayList<>();
 
+    /**
+     * checks if there is space left in the array for it to be added.
+     * It checks if the number of enrolled courses for the student has already exceeded the maximum number of courses.
+     * @return true if there is space left and false otherwise.
+     */
     public boolean addCourses(){
         int MAX_COURSES = 4;
         if (numCoursesEnrolled < MAX_COURSES) {
@@ -18,6 +23,11 @@ public class Course {
         return false;
     }
 
+    /**
+     * Checks the format of the course but because this method caused problems when trying to add the course to the arryalist, it was not used.
+     * @param c The course code
+     * @returntrue if it is in the right format and false otherwise
+     */
     public boolean check_course_format(String c) {
         char one = c.charAt(0);
         char two = c.charAt(1);
@@ -39,6 +49,12 @@ public class Course {
         return false;
     }
 
+    /**
+     * Reads through the course list and sees if the course entered by the user is in the course list.
+     * @param cou The course entered by the user
+     * @return true if the course is in the course list and false otherwise.
+     */
+
     private boolean courseList(String cou){
         try {
             String file = "src/CourseList";
@@ -58,6 +74,9 @@ public class Course {
         return false;
     }
 
+    /**
+     * Extracts the information from the Teacher list using string tokenizer and each token is placed in the 2d arraylist.
+     */
     public void teacherFileRead() {
         int row= 0;//countLines();
         try{
@@ -92,6 +111,12 @@ public class Course {
         teacherFilePrint();
     }
 
+    /**
+     * Removes the course from the teacher that will be replaced and the course is then copied and is added to the replacing teacher's line.
+     * @param t1 the name of the teacher that will be replaced
+     * @param t2 the name of the teacher that will replace t1
+     * @param cCT the course code that will be moving between the teachers
+     */
     public void teacherChanger(String t1, String t2, String cCT) {//cCT means changeCourseTeacher
         String stRemoved = null;
         teacherFileRead();
@@ -133,6 +158,9 @@ public class Course {
         }
     }
 
+    /**
+     * Prints the teacher list array list for confirmation cases.
+     */
     public void teacherFilePrint (){
         int row=13;
         int col;
