@@ -6,36 +6,14 @@ import java.util.StringTokenizer;
 public class Course {
     private int numCoursesEnrolled = 0;
     private ArrayList<ArrayList<String>> teacher_list = new ArrayList<>();
-    private static String educators = "src/TeacherList";
 
-    //public Course(){
-      //  this.row=countLines();
-   //}
-
-    // public String addCourse1 (){
-    //if (!check_course_format()) {
-    //  throw new InvalidParameterException("Invalid course code " + course); //exceptions are actually objects as well
-    //}
-    //if (numCoursesEnrolled < MAX_COURSES) { //check if  list of courses is not full
-    //  for (int i = 0; i < numCoursesEnrolled; i++) { // check if course is already there
-    //    if (courses.get(i).equals(course)) return ;
-    //}
-    //if (courseList()) {
-    ////courses.add(course); //add the course to the list
-    //numCoursesEnrolled++; //update course counter
-    //return course;
-    //}
-    //}
-    //return false;
-    //}
-
-    public boolean addCourses(String cour){
+    public boolean addCourses(){
         int MAX_COURSES = 4;
         if (numCoursesEnrolled < MAX_COURSES) {
-                if(courseList(cour) && check_course_format(cour)) {
+                //if(courseList(cour) && check_course_format(cour)) {
                     numCoursesEnrolled++;
                     return true;
-                }
+                //}
             }
         return false;
     }
@@ -80,12 +58,10 @@ public class Course {
         return false;
     }
 
-    /**
-     *
-     */
     public void teacherFileRead() {
         int row= 0;//countLines();
         try{
+            String educators = "src/TeacherList";
             File teacherFile = new File(educators);
             Scanner myReader = new Scanner(teacherFile);
             while(row<13) {
@@ -119,7 +95,7 @@ public class Course {
     public void teacherChanger(String t1, String t2, String cCT) {//cCT means changeCourseTeacher
         String stRemoved = null;
         teacherFileRead();
-        int len=13;//countLines();
+        int len=13;
         teacherFilePrint();
         int col;
         for (int i = 0; i < len; i++) {
@@ -158,7 +134,7 @@ public class Course {
     }
 
     public void teacherFilePrint (){
-        int row=13;//countLines();
+        int row=13;
         int col;
         for(int i=0; i<row; i++){
             int j=0;
@@ -171,20 +147,4 @@ public class Course {
         }
     }
 
-    public static int countLines() {
-        int row=0;
-        try {
-            File myObj = new File(educators);
-            Scanner reader = new Scanner(myObj);
-            while (reader.hasNextLine()) {
-                row++;
-            }
-            reader.close();
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }
-        return 16;
-    }
 }
-
-//check if arraylist is empty by y=using .empty() method
