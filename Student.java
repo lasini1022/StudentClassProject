@@ -8,6 +8,11 @@ public class Student {
     final private LocalDate DOB;
     //static Scanner in = new Scanner(System.in);
 
+    /**
+     * initializes the instance variables
+     * @param name name of student
+     * @param DOB the date of birth of the student
+     */
     public Student (String name, LocalDate DOB){
         this.name = name;
         this.DOB = DOB;
@@ -15,14 +20,26 @@ public class Student {
         last_id++; //increment last ID to account for creation of new student
     }
 
+    /**
+     *
+     * @return the date of birth
+     */
     public LocalDate getDOB(){
         return DOB; //dates and times are immutable in Java just like Strings, so it's ok to just return it
     }
 
+    /**
+     *
+     * @return the name of the student
+     */
     public String getName (){
         return name;
     }
 
+    /**
+     *
+     * @return the student ID of the student
+     */
     public int getID(){
         return ID;
     }
