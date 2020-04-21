@@ -1,54 +1,36 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.security.InvalidParameterException;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Course {
-    private int MAX_COURSES;
-    private String course;
     private int numCoursesEnrolled = 0;
-    private ArrayList<String> courses;
-    static final String file = "src/CourseList";
-    public Course(int MAX_COURSES, String course, ArrayList<String> courses){
-        this.MAX_COURSES = MAX_COURSES;
-        this.course = course;
-        this.courses = courses;
+    private ArrayList<ArrayList<String>> teacher_list = new ArrayList<>();
 
-    }
-    /**
-     * Adds the specified course to the list of courses that student is taking
-     * Proper formats can be found on Ministry of education publication
-     * @return true if the course was successfully added, and false otherwise (if course is already on the list, or max number of courses is reached
-     * @throws java.security.InvalidParameterException if course code is not properly formatted
-     */
-    public boolean addCourse (){
-        if (!check_course_format(course) ) {
-            throw new InvalidParameterException("Invalid course code " + course); //exceptions are actually objects as well
-        }
-        if (numCoursesEnrolled < MAX_COURSES) { //check if  list of courses is not full
-            for (int i = 0; i < numCoursesEnrolled; i++) { // check if course is already there
-                if (courses.get(i).equals(course)) return false;
+    public boolean addCourses(){
+        int MAX_COURSES = 4;
+        if (numCoursesEnrolled < MAX_COURSES) {
+                //if(courseList(cour) && check_course_format(cour)) {
+                    numCoursesEnrolled++;
+                    return true;
+                //}
             }
-            if (courseList()) {
-            courses.add(numCoursesEnrolled, course); //add the course to the list
-            numCoursesEnrolled++; //update course counter
-            return true;
-            }
-        }
         return false;
     }
 
-    /*uses a file xyz.txt with list of all course*/
-    private boolean check_course_format (String course){
-        char n = course.charAt(4);
-        if(course.length()==5) {
-            if ((course.charAt(0)>64 && course.charAt(0)<91)) {
-                if ((course.charAt(1)>64 && course.charAt(1)<91)) {
-                    if ((course.charAt(2)>64 && course.charAt(2)<91)) {
-                        if (course.charAt(3) == 4){
-                            return n == 8 || (n > 66 && n < 70) || (n > 75 && n < 81) || (n == 85);
+    public boolean check_course_format(String c) {
+        char one = c.charAt(0);
+        char two = c.charAt(1);
+        char three = c.charAt(2);
+        char fourth = c.charAt(3);
+        char fifth = c.charAt(4);
+
+        if(c.length()==5) {
+            if ((one>64 && one<91)) {
+                if ((two>64 && two<91)) {
+                    if ((three>64 && three<91)) {
+                        if (fourth == 4){
+                            return (fifth == 8) || (fifth > 66 && fifth < 70) || (fifth > 75 && fifth < 81) || (fifth == 85);
                         }
                     }
                 }
@@ -56,31 +38,113 @@ public class Course {
         }
         return false;
     }
-    public ArrayList<String> getCourses (){
-        //return courses; <-does NOT make a copy of array, this gives access to course list
-        return (ArrayList<String>) List.copyOf( courses );//return a full copy of array of courses
-    }
 
-     public boolean courseList(){
-        String data;
+    private boolean courseList(String cou){
         try {
+            String file = "src/CourseList";
             File myObj = new File(file);
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
-                data = myReader.nextLine();
-                if (data.equals(course)) {
+                String data = myReader.nextLine();
+                if (data.equals(cou)) {
                     return true;
-                }
-                else{
-                    System.out.println("You have entered an invalid course.");
                 }
             }
             myReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
-            return false;
         }
         return false;
     }
+
+    public void teacherFileRead() {
+        int row= 0;//countLines();
+        try{
+            String educators = "src/TeacherList";
+            File teacherFile = new File(educators);
+            Scanner myReader = new Scanner(teacherFile);
+            while(row<13) {
+                while (myReader.hasNextLine()) {
+                    String data = myReader.nextLine();
+                    StringTokenizer tokenizer = new StringTokenizer(data, "|");
+                    while (tokenizer.hasMoreTokens()) {
+                        String token = tokenizer.nextToken();
+                        teacher_list.get(row).add(token);
+                    }
+                }
+                row++;
+            }
+        }catch(FileNotFoundException e){
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        int col;
+        for(int i=0; i<row; i++){
+            int j=0;
+            col=teacher_list.get(i).size();
+            while(j<col){
+                System.out.print(teacher_list.get(row).get(col)+",");
+                col++;
+            }
+            System.out.print("\n");
+        }
+        teacherFilePrint();
+    }
+
+    public void teacherChanger(String t1, String t2, String cCT) {//cCT means changeCourseTeacher
+        String stRemoved = null;
+        teacherFileRead();
+        int len=13;
+        teacherFilePrint();
+        int col;
+        for (int i = 0; i < len; i++) {
+            int j = 0;
+            col = teacher_list.get(i).size();
+            while (j < col) {
+                String st = teacher_list.get(i).get(j);
+                if (st.equals(t1)) {
+                    for (int h = 1; h < col; h++) {
+                        String st1 = teacher_list.get(i).get(h);
+                        if (st1.equals(cCT)) {
+                            String st2 = teacher_list.get(i).get(h + 1);
+                            if (st2.equals("Active")) {
+                                stRemoved = teacher_list.get(i).get(h);
+                                teacher_list.remove(st1);
+                                teacher_list.remove(st2);
+                            }
+                        }
+                    }
+                }
+                col++;
+            }
+        }
+        for(int i=0; i<len; i++){
+            int j=0;
+            col=teacher_list.get(i).size();
+            while(j<col){
+                String st = teacher_list.get(i).get(j);
+                if (st.equals(t2)) {
+                    teacher_list.get(i).add(stRemoved);
+                    teacher_list.get(i).add("Active");
+                }
+                col++;
+            }
+        }
+    }
+
+    public void teacherFilePrint (){
+        int row=13;
+        int col;
+        for(int i=0; i<row; i++){
+            int j=0;
+            col=teacher_list.get(i).size();
+            while(j<col){
+                System.out.print(teacher_list.get(row).get(col)+",");
+                col++;
+            }
+            System.out.print("\n");
+        }
+    }
+
 }
