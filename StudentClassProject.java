@@ -19,6 +19,11 @@ public class StudentClassProject {
     static String FILE = "src/TeacherList";
     static ArrayList<String> courses;
 
+    /**
+     * Mainly asks for input information for it to be processed in other methods and classes.
+     * @param args N/A
+     * @throws IOException if file was unable to be found
+     */
     public static void main(String[] args) throws IOException {
         System.out.println("How many students?");
         int num_students = in.nextInt();
@@ -95,6 +100,10 @@ public class StudentClassProject {
         } while(ans.equals("yes"));
     }
 
+    /**
+     * Ask for the name, DOB, and classes of the student.
+     * @return a string containing all the above information for it to be stored in the array list.
+     */
     private static String getUserInput() {
         Course c =new Course();
         System.out.println("Type student name and press enter");
@@ -152,6 +161,9 @@ public class StudentClassProject {
         return s;//can later add student and room number
     }
 
+    /**
+     * writes the student names file.
+     */
     private static void writeFile() {
         try {
             FileWriter myWriter = new FileWriter(filename);
@@ -164,6 +176,10 @@ public class StudentClassProject {
             System.out.println("error occurred creating a file");
         }
     }
+
+    /**
+     * Prints the list of courses that are available for the year.
+     */
     public static void courseList_Print(){
         String data;
         try {
@@ -180,6 +196,10 @@ public class StudentClassProject {
         }
     }
 
+    /**
+     * Prints the list of teachers including what courses they have for the year,
+     * with the status of the course(if it is active, past, or scheduled).
+     */
     public static void teacherList_Print(){
         String data;
         try {
@@ -196,6 +216,11 @@ public class StudentClassProject {
         }
     }
 
+    /**
+     * Prints the time period of the current semester depending on the current month and day.
+     * The current month and day is asked manually since LocalDate does work properly for this part.
+     * @return the status of the semester depending on current date
+     */
     public static String progress(){
         System.out.print("Enter today's month: ");
         int m = in.nextInt();
@@ -231,6 +256,11 @@ public class StudentClassProject {
         return "in none of the";
     }
 
+    /**
+     *Deletes the student that is entered by user.
+     * @param name name of the student that will be deleted
+     * @throws FileNotFoundException if the file is unable to be found
+     */
     public static void deleteStudent(String name) throws FileNotFoundException {
         int length = students.size();
         for(int g=0; g<length;){
