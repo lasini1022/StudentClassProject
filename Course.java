@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 public class Course {
     private int numCoursesEnrolled = 0;
     private ArrayList<ArrayList<String>> teacher_list = new ArrayList<>();
-    private int row=13;
     private static String educators = "src/TeacherList";
 
     //public Course(){
@@ -97,8 +96,8 @@ public class Course {
                         String token = tokenizer.nextToken();
                         teacher_list.get(row).add(token);
                     }
-                    row++;
                 }
+                row++;
             }
         }catch(FileNotFoundException e){
             System.out.println("An error occurred.");
